@@ -1,5 +1,5 @@
-// const api1 = `1kGVYkYPJWDEsF3yI2RXvmEXQMlqqnFXCKOm7T4zAAAhEUnoZpUlOlyKma9V`;
-const api1 = `DSsmwgvtKwBZRnPpYcdUGX4M9FNTWYt9SsYVNqpzg7ihbuycSRxObwIhJOBW`;
+const api1 = `1kGVYkYPJWDEsF3yI2RXvmEXQMlqqnFXCKOm7T4zAAAhEUnoZpUlOlyKma9V`;
+// const api1 = `DSsmwgvtKwBZRnPpYcdUGX4M9FNTWYt9SsYVNqpzg7ihbuycSRxObwIhJOBW`;
 const api2 = `DSsmwgvtKwBZRnPpYcdUGX4M9FNTWYt9SsYVNqpzg7ihbuycSRxObwIhJOBW`;
 
 
@@ -25,18 +25,6 @@ let win_percentage = document.querySelector('.js-win-perc');
 let defeat_percentage = document.querySelector('.js-defeat-perc');
 let imageTeam = document.querySelector('.js-imageinfo');
 let data_season_topscorer, data_season_topassist, data_team_most_goals, data_goalkeeper_cleansheet;
-let listenToClick = () => {
-    stats_button.addEventListener('click', () => {
-        console.log('stats button clicked');
-        stats_button.classList.add('is-selected');
-        standings_button.classList.remove('is-selected');
-    })
-    standings_button.addEventListener('click', () => {
-        console.log('close button clicked');
-        stats_button.classList.remove('is-selected');
-        standings_button.classList.add('is-selected');
-    })
-};
 
 let ListenToClickTeamSquad = () => {
     let team = document.querySelectorAll('.js-squad');
@@ -55,7 +43,6 @@ let ListenToClickTeamSquad = () => {
         modal.style.display = "none";
         //set the image src empty
         imageTeam.src = '';
-
     }
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
@@ -80,6 +67,15 @@ let showTeamInfo = async (id) => {
     const image = data.data.logo_path;
     const TeamInfostats = data.data.stats.data[0]
     console.log('TEAM INFO STATS', TeamInfostats);
+    let ScoringMinutes, Penalties, CleanSheet, Wins;
+    FailedToScore = TeamInfostats.failed_to_score;
+    Penalties = TeamInfostats.penalties;
+    CleanSheet = TeamInfostats.clean_sheet;
+    Wins = TeamInfostats.win;
+    console.log('FailedToScore', FailedToScore);
+    console.log('Penalties', Penalties);
+    console.log('CleanSheet', CleanSheet);
+    console.log('Wins', Wins);
     console.log('image', image);
     // .attacks .shots_on_target .fouls .yellowcards .redcards 
     imageTeam.src = image;
@@ -88,107 +84,174 @@ let showTeamInfo = async (id) => {
     fouls.innerHTML = TeamInfostats.fouls;
     teamYellows.innerHTML = TeamInfostats.yellowcards;
     teamReds.innerHTML = TeamInfostats.redcards;
-    const ctx1 = document.getElementById('js-graph3');
+    let donut1 = document.querySelector('.js-graph3');
+    let donut2 = document.querySelector('.js-graph4');
+    let donut3 = document.querySelector('.js-graph5');
+    let donut4 = document.querySelector('.js-graph6');
+    donut1.innerHTML = '<canvas class="" id="js-graph3_inner" width="3" height="1"></canvas>';
+    donut2.innerHTML = '<canvas class="" id="js-graph4_inner" width="3" height="1"></canvas>';
+    donut3.innerHTML = '<canvas class="" id="js-graph5_inner" width="3" height="1"></canvas>';
+    donut4.innerHTML = '<canvas class="" id="js-graph6_inner" width="3" height="1"></canvas>';
+    const ctx1 = document.getElementById('js-graph3_inner');
     new Chart(ctx1, {
         type: 'doughnut',
         data: {
-            labels: ['Wins', 'Draws', 'Defeats'],
+            labels: ['Home wins', 'Away wins'],
             datasets: [{
-                label: '% Matches',
-                // data: [stats.win_percentage.all, draws,stats.defeat_percentage.all], 
-                data: [33, 44, 55],
+                label: '# Matches',
+                data: [Wins.home, Wins.away],
+                backgroundColor: [
+                    'rgba(255, 182, 92, 1)',
+                    'rgba(143, 190, 237, 1)'],
                 borderWidth: 1
             }]
         },
         options: {
+            responsive: true,
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                xAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }]
             },
-            title: {
-                display: true,
-                text: 'Matches',
-                fontSize: 20,
-                fontColor: 'black'
-            },
-            legend: {
-                display: true,
-                position: 'right',
-                labels: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Wins',
+                    fontSize: 20,
                     fontColor: 'black'
                 }
             }
         }
     });
-    const ctx2 = document.getElementById('js-graph4');
+    const ctx2 = document.getElementById('js-graph4_inner');
     new Chart(ctx2, {
         type: 'doughnut',
         data: {
-            labels: ['Wins', 'Draws', 'Defeats'],
+            labels: ['Home cleansheets', 'Away cleansheets'],
             datasets: [{
-                label: '% Matches',
-                // data: [stats.win_percentage.all, draws,stats.defeat_percentage.all], 
-                data: [33, 44, 55],
-                borderWidth: 1
+                label: '# Matches',
+                data: [CleanSheet.home, CleanSheet.away],
+                backgroundColor: [
+                    'rgba(255, 182, 92, 1)',
+                    'rgba(143, 190, 237, 1)'],
+                borderWidth: 1,
             }]
         },
         options: {
+            responsive: true,
             scales: {
-                y: {
-                    beginAtZero: true
+                xAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }]
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Cleansheets',
+                    fontSize: 20,
+                    fontColor: 'black'
                 }
             }
         }
     });
-    const ctx3 = document.getElementById('js-graph5');
+    const ctx3 = document.getElementById('js-graph5_inner');
     new Chart(ctx3, {
-        type: 'doughnut',
+        type: 'pie',
         data: {
-            labels: ['Wins', 'Draws', 'Defeats'],
+            labels: ['Awarded', 'Scored', 'Conceded'],
             datasets: [{
-                label: '% Matches',
-                // data: [stats.win_percentage.all, draws,stats.defeat_percentage.all], 
-                data: [33, 44, 55],
+                // label: '% Matches',
+                data: [Penalties.awarded, Penalties.scored, Penalties.conceded],
+                backgroundColor: [
+                    'rgba(143, 190, 237, 1)',
+                    'rgba(255, 182, 92, 1)',
+                    'rgba(255, 0, 0, 0.62)'],
                 borderWidth: 1
             }]
         },
         options: {
+            responsive: true,
             scales: {
-                y: {
-                    beginAtZero: true
+                xAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }]
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Penalties',
+                    fontSize: 20,
+                    fontColor: 'black'
                 }
             }
         }
     });
-    const ctx4 = document.getElementById('js-graph6');
+    const ctx4 = document.getElementById('js-graph6_inner');
     new Chart(ctx4, {
-        type: 'doughnut',
+        type: 'pie',
         data: {
-            labels: ['Wins', 'Draws', 'Defeats'],
+            labels: ['Home games', 'Away games'],
             datasets: [{
-                label: '% Matches',
-                // data: [stats.win_percentage.all, draws,stats.defeat_percentage.all], 
-                data: [33, 44, 55],
+                label: '# Matches',
+                data: [FailedToScore.away, FailedToScore.home],
+                backgroundColor: [
+                    'rgba(255, 182, 92, 1)',
+                    'rgba(143, 190, 237, 1)'],
                 borderWidth: 1
             }]
         },
         options: {
+            responsive: true,
             scales: {
-                y: {
-                    beginAtZero: true
+                xAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }]
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Failed to score',
+                    fontSize: 20,
+                    fontColor: 'black'
                 }
             }
         }
     });
 };
 
-
 let showResults = (standings) => {
     let html = ''
     for (let i = 0; i < standings.length; i++) {
         html +=
-            `<div class="x-test c-button1 js-squad o-row--md " id="${standings[i].team_id}">
+            `<a href="#" class="x-test c-button1 js-squad o-row--md " id="${standings[i].team_id}">
                     <div class="y-test">
                         <article class="w-test u-text-bold">${standings[i].position}</article>
                         <article class="">${standings[i].team_name}</article>
@@ -201,7 +264,7 @@ let showResults = (standings) => {
                         <article class="vaste_width">${standings[i].total.goal_difference}</article>
                         <article class="">${standings[i].points}</article>
                     </div>
-                </div>`
+                </a>`
     }
     table.innerHTML += html
     ListenToClickTeamSquad()
@@ -215,18 +278,10 @@ let showLeagueStats = (data, d_topscorer, d_topassist, d_team_most_goals, d_goal
     console.log("Goalkeeper cleansheet ", d_goalkeeper_cleansheet);
     let stats = data.data.stats.data;
     seasonYear.innerHTML += `\t ${data.data.name}`;
-    // clubs.innerHTML += `:\t ${stats.number_of_clubs}`;
-    matches.innerHTML += `:\t ${stats.number_of_matches}`;
-    goals.innerHTML += `:\t ${stats.number_of_goals}`;
-    // yellowcards.innerHTML += `:\t ${stats.number_of_yellowcards}`;
-    // redcards.innerHTML += `:\t ${stats.number_of_redcards}`;
-    // avgyellowcard.innerHTML += `:\t ${stats.avg_yellowcards_per_match}`;
-    // avg_yellow.innerHTML += `:\t ${stats.avg_yellowcards_per_match}`;
     topscorer.innerHTML += `${d_topscorer}`;
     topassist.innerHTML += `${d_topassist}`;
     team_most_goals.innerHTML += `${d_team_most_goals}`;
     goalkeeper_cleansheet.innerHTML += `${d_goalkeeper_cleansheet}`;
-    // const ctx1 = document.querySelector('.js-graph1');
     const ctx1 = document.getElementById('js-graph1');
     let draws = (100 - stats.win_percentage.all - stats.defeat_percentage.all);
     new Chart(ctx1, {
@@ -235,20 +290,37 @@ let showLeagueStats = (data, d_topscorer, d_topassist, d_team_most_goals, d_goal
             labels: ['Wins', 'Draws', 'Defeats'],
             datasets: [{
                 label: '% Matches',
-                // data: [stats.win_percentage.all, draws,stats.defeat_percentage.all], 
-                data: [33, 44, 55],
+                data: [stats.win_percentage.all, draws, stats.defeat_percentage.all],
+                backgroundColor: [
+                    'rgba(142, 246, 6, 0.62)',
+                    'rgba(255, 83, 0, 0.62)',
+                    'rgba(255, 0, 0, 0.62)'],
                 borderWidth: 1
             }]
         },
         options: {
             scales: {
-                y: {
-                    beginAtZero: true
+                xAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }]
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Matches',
+                    fontSize: 20,
+                    fontColor: 'black'
                 }
             }
         }
     });
-    // const ctx2 = document.querySelector('.js-graph2');
     const ctx2 = document.getElementById('js-graph2');
     new Chart(ctx2, {
         type: 'doughnut',
@@ -256,22 +328,36 @@ let showLeagueStats = (data, d_topscorer, d_topassist, d_team_most_goals, d_goal
             labels: ['Yellow', 'Red'],
             datasets: [{
                 label: '# Cards',
-                // data: [stats.number_of_yellowcards, stats.number_of_redcards],
-                data: [33, 44],
+                data: [stats.number_of_yellowcards, stats.number_of_redcards],
+                backgroundColor: [
+                    'rgba(243, 232, 26, 1)',
+                    'rgba(255, 0, 0, 0.62)'],
                 borderWidth: 1
             }]
         },
         options: {
             scales: {
-                y: {
-                    beginAtZero: true
+                xAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)",
+                    }
+                }]
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Total of cards',
+                    fontSize: 20,
+                    fontColor: 'black'
                 }
             }
         }
     });
-
-    // win_percentage.innerHTML += `:\t ${stats.win_percentage.all}`;
-    // defeat_percentage.innerHTML += `:\t ${stats.defeat_percentage.all}`;
 };
 
 let getData = async () => {
@@ -326,7 +412,6 @@ let getData = async () => {
     data_team_most_goals = data6.data.name
     data_goalkeeper_cleansheet = data7.data.common_name
     showLeagueStats(data3, data_season_topscorer, data_season_topassist, data_team_most_goals, data_goalkeeper_cleansheet);
-    listenToClick();
 };
 
 document.addEventListener('DOMContentLoaded', function () {
