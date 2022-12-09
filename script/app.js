@@ -251,17 +251,17 @@ let showResults = (standings) => {
     let html = ''
     for (let i = 0; i < standings.length; i++) {
         html +=
-            `<a href="#" class="x-test c-button1 js-squad o-row--md " id="${standings[i].team_id}">
-                    <div class="y-test">
-                        <article class="w-test u-text-bold">${standings[i].position}</article>
+            `<a href="#" class="c-team__item c-button_team js-squad o-row--md " id="${standings[i].team_id}">
+                    <div class="c-team__item__name">
+                        <article class="u-fixed-widht-md u-text-bold">${standings[i].position}</article>
                         <article class="">${standings[i].team_name}</article>
                     </div>
-                    <div class="z-test">
-                        <article class="vaste_width">${standings[i].overall.games_played}</article>
-                        <article class="u-mobile-hide vaste_width">${standings[i].overall.won}</article>
-                        <article class="u-mobile-hide vaste_width">${standings[i].overall.draw}</article>
-                        <article class="u-mobile-hide vaste_width">${standings[i].overall.lost}</article>
-                        <article class="vaste_width">${standings[i].total.goal_difference}</article>
+                    <div class="c-team__item__info">
+                        <article class="fixed_width">${standings[i].overall.games_played}</article>
+                        <article class="u-mobile-hide fixed_width">${standings[i].overall.won}</article>
+                        <article class="u-mobile-hide fixed_width">${standings[i].overall.draw}</article>
+                        <article class="u-mobile-hide fixed_width">${standings[i].overall.lost}</article>
+                        <article class="fixed_width">${standings[i].total.goal_difference}</article>
                         <article class="">${standings[i].points}</article>
                     </div>
                 </a>`

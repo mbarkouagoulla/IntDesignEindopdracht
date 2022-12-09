@@ -538,7 +538,7 @@ input::placeholder {
 #COMPONENTS
 \*------------------------------------*/
 
-.c-logo__symbol_1 {
+.c-logo__symbol {
   /* height: 100%; */
   --w-size: 25%;
   --h-size: 20%;
@@ -598,16 +598,18 @@ input::placeholder {
     text-align: center;
   }
   /* .content_item2 takes horizontally a span of 2 columns*/
-  .content_item2 {
+  /* .content_item2 { */
+  .content_item_span_2 {
     grid-column: span 2;
   }
-  .content_item3 {
+  /* .content_item3 { */
+  .content_item_span_4 {
     padding: 4rem;
     grid-column: span 4;
   }
 }
-/* slidertest
-HIER SLIDERTEST
+/* slider
+HIER SLIDER
 */
 
 #slider {
@@ -661,8 +663,8 @@ body:has(#slide2:checked) #slides .inner {
   background: var(--global-html-backgroundColor);
 }
 
-/* slidertest
-EINDE SLIDERTEST
+/* slider
+EINDE SLIDER
 */
 
 @media screen and (max-width: 900px) {
@@ -729,7 +731,7 @@ EINDE SLIDERTEST
   background-color: var(--button-backgroundColor);
 }
 
-.c-button1 {
+.c-button_team {
   --button-hover-backgroundColor: var(--global-color-alpha-light);
   --button-hover-borderColor: var(--global-color-alpha-dark);
   --button-borderColor: var(--global-color-alpha-dark);
@@ -737,8 +739,8 @@ EINDE SLIDERTEST
   cursor: pointer;
 }
 
-.c-button1:hover,
-.c-button1:focus {
+.c-button_team:hover,
+.c-button_team:focus {
   color: white;
   border-color: var(--button-hover-borderColor);
   background-color: var(--button-hover-backgroundColor);
@@ -928,7 +930,7 @@ EINDE SLIDERTEST
 
 /*
     Utilities: text
-    Utility classes to create smaller or bigger test
+    Utility classes to create smaller or bigger 
 */
 
 .u-text-sm {
@@ -944,45 +946,43 @@ EINDE SLIDERTEST
     Utility classes to put specific widths onto elements
     Will be mostly used on o-layout__item
 */
-.x-test {
+.c-team__item {
   display: flex;
   justify-content: space-between;
 }
-.y-test {
+.c-team__item__name {
   display: flex;
   gap: 0.75rem;
 }
 
-.z-test {
+.c-team__item__info {
   display: flex;
   width: 6rem;
   justify-content: space-between;
 }
-.w-test {
+
+/* .w-test {
   width: 1rem;
-}
-.u-slide__item {
-  width: 100%;
-}
+} */
 
 .u-mobile-hide {
   display: none;
 }
 
 @media (min-width: 568px) {
-  .z-test {
+  .c-team__item__info {
     width: 18rem;
   }
   .u-mobile-hide {
     display: block;
   }
-  .vaste_width {
+  .fixed_width {
     width: 0.1rem;
   }
 }
 
 @media (min-width: 768px) {
-  .z-test {
+  .c-team__item__info {
     width: 22rem;
   }
   .u-mobile-hide {
@@ -1026,7 +1026,8 @@ EINDE SLIDERTEST
   border-radius: 0.5rem;
 }
 
-.modal-content_item2 {
+/* .modal-content_item2 { */
+.modal-content_item_span_2 {
   padding: 1rem;
 }
 
@@ -1100,11 +1101,12 @@ EINDE SLIDERTEST
     text-align: center;
     max-width: 100vh;
   }
-  .modal-content_item2 {
+  /* .modal-content_item2 { */
+  .modal-content_item_span_2 {
     padding: 0;
     grid-column: span 2;
   }
-  .modal-content_item3 {
+  .modal-content_item_span_3 {
     padding: 1rem;
     grid-column: span 3;
   }
@@ -1114,7 +1116,6 @@ EINDE SLIDERTEST
 .closeme {
   position: absolute;
   right: 0.5rem;
-  /* give it a fixed position on the top right corner */
   color: #aaa;
   float: right;
   font-size: 2rem;
@@ -1132,6 +1133,10 @@ EINDE SLIDERTEST
 /* END POPUP */
 .u-width-auto {
   width: auto !important;
+}
+
+.u-fixed-widht-md{
+  width:1rem
 }
 .u-width-max {
   width: 100% !important;
